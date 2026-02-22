@@ -200,13 +200,9 @@ resource "docker_container" "prosody" {
     container_path = "/etc/prosody/certs"
   }
 
-  user = "1000:1000"
-
   env = [
     "PROSODY_VIRTUAL_HOSTS=june.pet",
     "PROSODY_ADMINS=me@june.pet"
   ]
-
-  rm = false
 
 }
