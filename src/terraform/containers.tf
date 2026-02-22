@@ -207,4 +207,6 @@ resource "docker_container" "prosody" {
     "PROSODY_ADMINS=me@june.pet"
   ]
 
+  rm = false
+
 }
