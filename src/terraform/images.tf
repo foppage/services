@@ -40,3 +40,7 @@ resource "docker_image" "postgres" {
 resource "docker_image" "redis" {
   name = "redis:latest"
 }
+
+resource "docker_image" "prosody" {
+  name = "prosody:latest"
+}

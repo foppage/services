@@ -175,3 +175,41 @@ resource "docker_container" "paperless_redis" {
   }
 
 }
+
+resource "docker_container" "prosody" {
+  image = docker_image.prosody.image_id
+  name  = "prosody"
+
+  ports {
+    internal = 5222
+    external = 5222
+  }
+
+  ports {
+    internal = 5269
+    external = 5269
+  }
+
+  volumes {
+    host_path = "/media/remote/memos_data"
+    container_path = "/var/lib/prosody"
+  }
+
+  volumes {
+    volume_name = docker_volume.prosody_config.id
+    container_path = "/etc/prosody"
+  }
+
+  volumes {
+    host_path = "/home/june/certs"
+    container_path = "/etc/prosody/certs"
+  }
+
+  user = "1000:1000"
+
+  env = [
+    "PROSODY_VIRTUAL_HOSTS=june.pet",
+    "PROSODY_ADMINS=me@june.pet"
+  ]
+
+}

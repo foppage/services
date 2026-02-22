@@ -19,3 +19,10 @@ resource "docker_volume" "paperless_redis_data" {
     prevent_destroy = true
   }
 }
+
+resource "docker_volume" "prosody_config" {
+  name = "982f3cfa6a5a7b77a1bcf9d387146d3c6a2525939d4482bb11e8bcac8197972b"
+  lifecycle {
+    prevent_destroy = true
+  }
+}
