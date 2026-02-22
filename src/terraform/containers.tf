@@ -196,11 +196,6 @@ resource "docker_container" "prosody" {
   }
 
   volumes {
-    volume_name = docker_volume.prosody_config.id
-    container_path = "/etc/prosody"
-  }
-
-  volumes {
     host_path = "/home/june/certs"
     container_path = "/etc/prosody/certs"
   }
