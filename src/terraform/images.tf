@@ -42,5 +42,5 @@ resource "docker_image" "redis" {
 }
 
 resource "docker_image" "prosody" {
-  name = "prosody:latest"
+  name = "prosodyim/prosody:latest"
 }
