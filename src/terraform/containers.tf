@@ -191,7 +191,7 @@ resource "docker_container" "prosody" {
   }
 
   volumes {
-    host_path = "/media/remote/memos_data"
+    host_path = "/media/remote/prosody_data"
     container_path = "/var/lib/prosody"
   }
 
