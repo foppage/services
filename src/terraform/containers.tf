@@ -196,8 +196,8 @@ resource "docker_container" "prosody" {
   }
 
   volumes {
-    host_path = "/home/june/certs"
-    container_path = "/etc/prosody/certs"
+    host_path = "/etc/letsencrypt/live"
+    container_path = "/etc/letsencrypt/live"
   }
 
   env = [
