@@ -175,39 +175,3 @@ resource "docker_container" "paperless_redis" {
   }
 
 }
-
-resource "docker_container" "prosody" {
-  image = docker_image.prosody.image_id
-  name  = "prosody"
-
-  ports {
-    internal = 5222
-    external = 5222
-  }
-
-  ports {
-    internal = 5269
-    external = 5269
-  }
-
-  networks_advanced {
-    name = docker_network.nginx.id
-  }
-
-  volumes {
-    host_path = "/home/june/services/prosody_data"
-    container_path = "/var/lib/prosody"
-  }
-
-  volumes {
-    host_path = "/etc/letsencrypt"
-    container_path = "/etc/letsencrypt"
-  }
-
-  env = [
-    "PROSODY_VIRTUAL_HOSTS=june.pet",
-    "PROSODY_ADMINS=me@june.pet",
-    "PROSODY_COMPONENTS=upload.june.pet:http_file_share"
-  ]
-
-}
