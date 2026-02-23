@@ -190,6 +190,10 @@ resource "docker_container" "prosody" {
     external = 5269
   }
 
+  networks_advanced {
+    name = docker_network.nginx.id
+  }
+
   volumes {
     host_path = "/home/june/services/prosody_data"
     container_path = "/var/lib/prosody"
@@ -202,7 +206,8 @@ resource "docker_container" "prosody" {
 
   env = [
     "PROSODY_VIRTUAL_HOSTS=june.pet",
-    "PROSODY_ADMINS=me@june.pet"
+    "PROSODY_ADMINS=me@june.pet",
+    "PROSODY_COMPONENTS=upload.june.pet:http_file_share"
   ]
 
 }
