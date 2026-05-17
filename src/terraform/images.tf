@@ -42,7 +42,7 @@ resource "docker_image" "forgejo_runner" {
 }
 
 resource "docker_image" "docker_dind" {
-  name = "docker:dind-rootless"
+  name = "docker:dind"
 }
 
 resource "docker_image" "postgres" {
