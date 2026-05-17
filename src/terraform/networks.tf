@@ -1,5 +1,5 @@
-resource "docker_network" "nginx" {
-  name = "nginx_network"
+resource "docker_network" "cloudflared" {
+  name = "cloudflared_network"
 }
 
 resource "docker_network" "memos" {

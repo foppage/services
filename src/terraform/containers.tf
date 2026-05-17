@@ -1,23 +1,23 @@
 // nginx
 
-resource "docker_container" "nginx" {
-  image = docker_image.nginx.image_id
-  name = "nginx"
-
-  hostname = "nginx"
-
-  networks_advanced {
-    name = docker_network.nginx.id
-  }
-
-  depends_on = [
-    docker_container.memos,
-    docker_container.paperless,
-    docker_container.stirling-pdf,
-    docker_container.forgejo
-  ]
-
-}
+# resource "docker_container" "nginx" {
+#   image = docker_image.nginx.image_id
+#   name = "nginx"
+#
+#   hostname = "nginx"
+#
+#   networks_advanced {
+#     name = docker_network.nginx.id
+#   }
+#
+#   depends_on = [
+#     docker_container.memos,
+#     docker_container.paperless,
+#     docker_container.stirling-pdf,
+#     docker_container.forgejo
+#   ]
+#
+# }
 
 // cloudflare tunnels
 
@@ -28,7 +28,7 @@ resource "docker_container" "cloudflared" {
   command = ["tunnel", "--no-autoupdate", "run", "--token", var.cloudflared_token]
 
   networks_advanced {
-    name = docker_network.nginx.id
+    name = docker_network.cloudflared.id
   }
 
 }
@@ -40,7 +40,7 @@ resource "docker_container" "forgejo" {
   name = "forgejo"
 
   networks_advanced {
-    name = docker_network.nginx.id
+    name = docker_network.cloudflared.id
   }
 
   networks_advanced {
@@ -90,7 +90,7 @@ resource "docker_container" "stirling-pdf" {
   name = "spdf"
 
   networks_advanced {
-    name = docker_network.nginx.id
+    name = docker_network.cloudflared.id
   }
 
 }
@@ -102,7 +102,7 @@ resource "docker_container" "memos" {
   name  = "memos"
 
   networks_advanced {
-    name = docker_network.nginx.id
+    name = docker_network.cloudflared.id
   }
 
   networks_advanced {
@@ -161,7 +161,7 @@ resource "docker_container" "paperless" {
   }
 
   networks_advanced {
-    name = docker_network.nginx.id
+    name = docker_network.cloudflared.id
   }
 
   depends_on = [
