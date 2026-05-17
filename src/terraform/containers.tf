@@ -75,7 +75,7 @@ resource "docker_container" "forgejo" {
 }
 
 resource "docker_container" "docker_dind" {
-  image = docker_image.docker_dind
+  image = docker_image.docker_dind.image_id
   name = "docker_dind"
 
   volumes {
@@ -84,7 +84,7 @@ resource "docker_container" "docker_dind" {
   }
 
   networks_advanced {
-    name = docker_network.forgejo
+    name = docker_network.forgejo.id
   }
 
   restart = "unless-stopped"
@@ -100,7 +100,7 @@ resource "docker_container" "runner" {
   ]
 
   networks_advanced {
-    name = docker_network.forgejo
+    name = docker_network.forgejo.id
   }
 
   depends_on = [docker_container.docker_dind]
