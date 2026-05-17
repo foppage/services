@@ -48,8 +48,6 @@ resource "docker_container" "forgejo" {
   }
 
   env = [
-    "USER_UID=1000",
-    "USER_GID=1000",
     "FORGEJO__database__DB_TYPE=postgres",
     "FORGEJO__database__HOST=forgejo_pg:5432",
     "FORGEJO__database__NAME=forgejo",
@@ -74,7 +72,7 @@ resource "docker_container" "forgejo_pg" {
 
   volumes {
     volume_name = docker_volume.forgejo_pg_data.id
-    container_path = "/var/lib/postgresql/data"
+    container_path = "/var/lib/postgresql"
   }
 
   env = [
@@ -113,25 +111,18 @@ resource "docker_container" "memos" {
 
   env = [
     "MEMOS_DRIVER=postgres",
-    "MEMOS_DSN=user=memos password=memos dbname=memosdb host=memos_db sslmode=disable"
+    "MEMOS_DSN=user=memos password=memos dbname=memos host=memos_pg sslmode=disable"
   ]
 
-  volumes {
-    host_path = "/media/remote/memos_data"
-    container_path = "/var/opt/memos"
-  }
-
-  user = "1000:1000"
-
   depends_on = [
-    docker_container.memos_db
+    docker_container.memos_pg
   ]
 
 }
 
-resource "docker_container" "memos_db" {
+resource "docker_container" "memos_pg" {
   image = docker_image.postgres.image_id
-  name = "memos_db"
+  name = "memos_pg"
 
   networks_advanced {
     name = docker_network.memos.id
@@ -139,13 +130,13 @@ resource "docker_container" "memos_db" {
 
   volumes {
     volume_name = docker_volume.memos_pg_data.id
-    container_path = "/var/lib/postgresql/data"
+    container_path = "/var/lib/postgresql"
   }
 
   env = [
     "POSTGRES_USER=memos",
     "POSTGRES_PASSWORD=memos",
-    "POSTGRES_DB=memosdb"
+    "POSTGRES_DB=memos"
   ]
 
 }
@@ -157,35 +148,13 @@ resource "docker_container" "paperless" {
   name = "paperless"
 
   env = [
-    "USERMAP_UID=1000",
-    "USERMAP_GID=1000",
     "PAPERLESS_URL=https://paperless.june.pet",
     "PAPERLESS_SECRET_KEY=${var.paperless_secret_key}",
     "PAPERLESS_TIME_ZONE=Europe/London",
     "PAPERLESS_OCR_LANGUAGE=eng",
     "PAPERLESS_REDIS=redis://paperless_redis:6379",
-    "PAPERLESS_DBHOST=paperless_db"
+    "PAPERLESS_DBHOST=paperless_pg"
   ]
-
-  volumes {
-    host_path = "/media/remote/paperless/data"
-    container_path = "/usr/src/paperless/data"
-  }
-
-  volumes {
-    host_path = "/media/remote/paperless/media"
-    container_path = "/usr/src/paperless/media"
-  }
-
-  volumes {
-    host_path = "/media/remote/paperless/export"
-    container_path = "/usr/src/paperless/export"
-  }
-
-  volumes {
-    host_path = "/media/remote/paperless/consume"
-    container_path = "/usr/src/paperless/consume"
-  }
 
   networks_advanced {
     name = docker_network.paperless.id
@@ -204,7 +173,7 @@ resource "docker_container" "paperless" {
 
 resource "docker_container" "paperless_pg" {
   image = docker_image.postgres.image_id
-  name  = "paperless_db"
+  name  = "paperless_pg"
 
   env = [
     "POSTGRES_DB=paperless",
@@ -218,7 +187,7 @@ resource "docker_container" "paperless_pg" {
 
   volumes {
     volume_name = docker_volume.paperless_pg_data.id
-    container_path = "/var/lib/postgresql/data"
+    container_path = "/var/lib/postgresql"
   }
 
 }
