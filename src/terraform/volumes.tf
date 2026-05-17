@@ -1,3 +1,10 @@
+resource "docker_volume" "forgejo_data" {
+  name = "forgejo-data"
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "docker_volume" "forgejo_pg_data" {
   name = "forgejo-pg-data"
   lifecycle {

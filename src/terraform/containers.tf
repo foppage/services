@@ -47,7 +47,20 @@ resource "docker_container" "forgejo" {
     name = docker_network.forgejo.id
   }
 
+  volumes {
+    volume_name = docker_volume.forgejo_data
+    container_path = "/data"
+  }
+
+  volumes {
+    host_path = "/etc/localtime"
+    container_path = "/etc/localtime"
+    read_only = true
+  }
+
   env = [
+    "USER_UID=1000",
+    "USER_GID=1000",
     "FORGEJO__database__DB_TYPE=postgres",
     "FORGEJO__database__HOST=forgejo_pg:5432",
     "FORGEJO__database__NAME=forgejo",
