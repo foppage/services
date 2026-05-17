@@ -79,7 +79,7 @@ resource "docker_container" "docker_dind" {
   name = "docker_dind"
 
   volumes {
-    volume_name = docker_volume.runner_data
+    volume_name = docker_volume.runner_data.id
     container_path = "/data"
   }
 
