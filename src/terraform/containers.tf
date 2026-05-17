@@ -48,7 +48,7 @@ resource "docker_container" "forgejo" {
   }
 
   volumes {
-    volume_name = docker_volume.forgejo_data
+    volume_name = docker_volume.forgejo_data.id
     container_path = "/data"
   }
 
