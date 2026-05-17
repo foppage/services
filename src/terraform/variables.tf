@@ -9,11 +9,10 @@ variable "cloudflared_token" {
 }
 
 variable "forgejo_runner_uuid" {
-  type = string,
-  sensitive = true
+  type = string
 }
 
 variable "forgejo_runner_token" {
-  type = string,
+  type = string
   sensitive = true
 }
