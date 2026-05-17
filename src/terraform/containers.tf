@@ -69,7 +69,7 @@ resource "docker_container" "forgejo_pg" {
   name = "forgejo_pg"
 
   networks_advanced {
-    name = docker_network.forgejo
+    name = docker_network.forgejo.id
   }
 
   volumes {
