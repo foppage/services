@@ -1,21 +1,10 @@
+// nginx
+
 resource "docker_container" "nginx" {
   image = docker_image.nginx.image_id
   name = "nginx"
 
-  ports {
-      internal = 80
-      external = 80
-  }
-
-  ports {
-      internal = 443
-      external = 443
-  }
-
-  volumes {
-    host_path = "/home/june/certs"
-    container_path = "/etc/nginx/certs"
-  }
+  hostname = "nginx"
 
   networks_advanced {
     name = docker_network.nginx.id
@@ -24,10 +13,79 @@ resource "docker_container" "nginx" {
   depends_on = [
     docker_container.memos,
     docker_container.paperless,
-    docker_container.stirling-pdf
+    docker_container.stirling-pdf,
+    docker_container.forgejo
   ]
 
 }
+
+// cloudflare tunnels
+
+resource "docker_container" "cloudflared" {
+  image = docker_image.cloudflared.image_id
+  name = "cloudflared"
+
+  command = ["tunnel", "--no-autoupdate", "run", "--token", var.cloudflared_token]
+
+  networks_advanced {
+    name = docker_network.nginx.id
+  }
+
+}
+
+// forgejo (git)
+
+resource "docker_container" "forgejo" {
+  image = docker_image.forgejo.image_id
+  name = "forgejo"
+
+  networks_advanced {
+    name = docker_network.nginx.id
+  }
+
+  networks_advanced {
+    name = docker_network.forgejo.id
+  }
+
+  env = [
+    "USER_UID=1000",
+    "USER_GID=1000",
+    "FORGEJO__database__DB_TYPE=postgres",
+    "FORGEJO__database__HOST=forgejo_pg:5432",
+    "FORGEJO__database__NAME=forgejo",
+    "FORGEJO__database__USER=forgejo",
+    "FORGEJO__database__PASSWD=forgejo"
+  ]
+
+  depends_on = [
+    docker_container.forgejo_pg
+  ]
+
+}
+
+resource "docker_container" "forgejo_pg" {
+
+  image = docker_image.postgres.image_id
+  name = "forgejo_pg"
+
+  networks_advanced {
+    name = docker_network.forgejo
+  }
+
+  volumes {
+    volume_name = docker_volume.forgejo_pg_data.id
+    container_path = "/var/lib/postgresql/data"
+  }
+
+  env = [
+    "POSTGRES_USER=forgejo",
+    "POSTGRES_PASSWORD=forgejo",
+    "POSTGRES_DB=forgejo"
+  ]
+
+}
+
+// stirling pdf
 
 resource "docker_container" "stirling-pdf" {
   image = docker_image.stirlingpdf.image_id
@@ -38,6 +96,8 @@ resource "docker_container" "stirling-pdf" {
   }
 
 }
+
+// memos
 
 resource "docker_container" "memos" {
   image = docker_image.memos.image_id
@@ -89,6 +149,8 @@ resource "docker_container" "memos_db" {
   ]
 
 }
+
+// paperless
 
 resource "docker_container" "paperless" {
   image = docker_image.paperless.image_id

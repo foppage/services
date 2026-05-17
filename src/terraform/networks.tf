@@ -9,3 +9,7 @@ resource "docker_network" "memos" {
 resource "docker_network" "paperless" {
   name = "paperless_network"
 }
+
+resource "docker_network" "forgejo" {
+  name = "forgejo_network"
+}
