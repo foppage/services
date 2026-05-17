@@ -33,6 +33,10 @@ resource "docker_image" "paperless" {
   name = "paperlessngx/paperless-ngx:latest"
 }
 
+resource "docker_image" "forgejo" {
+  name = "codeberg.org/forgejo/forgejo:15.0.2"
+}
+
 resource "docker_image" "postgres" {
   name = "postgres:latest"
 }
@@ -41,6 +45,6 @@ resource "docker_image" "redis" {
   name = "redis:latest"
 }
 
-resource "docker_image" "prosody" {
-  name = "prosody:latest"
+resource "docker_image" "cloudflared" {
+  name = "cloudflare/cloudflared:latest"
 }
