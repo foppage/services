@@ -5,6 +5,13 @@ resource "docker_volume" "forgejo_data" {
   }
 }
 
+resource "docker_volume" "runner_data" {
+  name = "runner-data"
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "docker_volume" "forgejo_pg_data" {
   name = "forgejo-pg-data"
   lifecycle {

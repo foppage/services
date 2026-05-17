@@ -74,6 +74,41 @@ resource "docker_container" "forgejo" {
 
 }
 
+resource "docker_container" "docker_dind" {
+  image = docker_image.docker_dind
+  name = "docker_dind"
+
+  volumes {
+    volume_name = docker_volume.runner_data
+    container_path = "/data"
+  }
+
+  networks_advanced {
+    name = docker_network.forgejo
+  }
+
+  restart = "unless-stopped"
+  command = ["dockerd", "-H", "tcp://0.0.0.0:2375", "--tls=false"]
+}
+
+resource "docker_container" "runner" {
+  image = docker_image.forgejo_runner.image_id
+  name = "runner"
+
+  env = [
+    "DOCKER_HOST=tcp://docker_dind:2375"
+  ]
+
+  networks_advanced {
+    name = docker_network.forgejo
+  }
+
+  depends_on = [docker_container.docker_dind]
+  restart: "unless-stopped"
+  command = ["forgejo-runner", "daemon", "--url", "http://forgejo:3000/", "--uuid", var.forgejo_runner_uuid, "--token", var.forgejo_runner_token, "--label", "docker:docker://node:lts"]
+
+}
+
 resource "docker_container" "forgejo_pg" {
 
   image = docker_image.postgres.image_id

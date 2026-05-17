@@ -37,6 +37,14 @@ resource "docker_image" "forgejo" {
   name = "codeberg.org/forgejo/forgejo:15.0.2"
 }
 
+resource "docker_image" "forgejo_runner" {
+  name = "code.forgejo.org/forgejo/runner:12"
+}
+
+resource "docker_image" "docker_dind" {
+  name = "docker:dind-rootless"
+}
+
 resource "docker_image" "postgres" {
   name = "postgres:latest"
 }
