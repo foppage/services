@@ -87,6 +87,8 @@ resource "docker_container" "docker_dind" {
     name = docker_network.forgejo.id
   }
 
+  privileged = true
+
   restart = "unless-stopped"
   command = ["dockerd", "-H", "tcp://0.0.0.0:2375", "--tls=false"]
 }
