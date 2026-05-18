@@ -89,6 +89,11 @@ resource "docker_container" "docker_dind" {
 
   privileged = true
 
+  volumes {
+    host_path = "/var/run/docker.sock"
+    container_path = "/var/run/docker.sock"
+  }
+
   restart = "unless-stopped"
   command = ["dockerd", "-H", "tcp://0.0.0.0:2375", "--tls=false"]
 }
