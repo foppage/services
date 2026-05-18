@@ -105,7 +105,7 @@ resource "docker_container" "runner" {
 
   depends_on = [docker_container.docker_dind]
   restart = "unless-stopped"
-  command = ["forgejo-runner", "daemon", "--url", "http://forgejo:3000/", "--uuid", var.forgejo_runner_uuid, "--token", var.forgejo_runner_token, "--label", "docker:docker://node:lts"]
+  command = ["echo", "-n", var.forgejo_runner_token, "|", "forgejo-runner", "daemon", "--url", "http://forgejo:3000/", "--uuid", var.forgejo_runner_uuid, "--token-url", "/dev/stdin", "--label", "docker:docker://node:lts"]
 
 }
 
