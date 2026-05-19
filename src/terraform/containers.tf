@@ -66,6 +66,7 @@ resource "docker_container" "forgejo" {
     "FORGEJO__database__NAME=forgejo",
     "FORGEJO__database__USER=forgejo",
     "FORGEJO__database__PASSWD=forgejo"
+    "FORGEJO__server_LANDING_PAGE=/explore/repos"
   ]
 
   depends_on = [
