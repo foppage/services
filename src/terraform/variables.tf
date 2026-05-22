@@ -21,6 +21,15 @@ variable "paperless_secret_key" {
   sensitive = true
 }
 
+variable "paperless_oidc_client_id" {
+  type = string
+}
+
+variable "paperless_oidc_client_secret" {
+  type = string
+  sensitive = true
+}
+
 variable "forgejo_runner_uuid" {
   type = string
 }

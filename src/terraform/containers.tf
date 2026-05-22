@@ -217,7 +217,9 @@ resource "docker_container" "paperless" {
     "PAPERLESS_TIME_ZONE=Europe/London",
     "PAPERLESS_OCR_LANGUAGE=eng",
     "PAPERLESS_REDIS=redis://paperless_redis:6379",
-    "PAPERLESS_DBHOST=paperless_pg"
+    "PAPERLESS_DBHOST=paperless_pg",
+    "PAPERLESS_APPS=allauth.socialaccount.providers.openid_connect",
+    "PAPERLESS_SOCIALACCOUNT_PROVIDERS={\"openid_connect\":{\"SCOPE\":[\"openid\",\"profile\",\"email\"],\"OAUTH_PKCE_ENABLED\":true,\"APPS\":[{\"provider_id\":\"pocket-id\",\"name\":\"Pocket-ID\",\"client_id\":\"${var.paperless_oidc_client_id}\",\"secret\":\"${var.paperless_oidc_client_secret}\",\"settings\":{\"server_url\":\"https://id.june.pet\"}}]}}"
   ]
 
   networks_advanced {
