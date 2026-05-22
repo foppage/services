@@ -21,6 +21,10 @@
 #   }
 # }
 
+resource "docker_image" "pocket_id" {
+  name = "ghcr.io/pocket-id/pocket-id:v2"
+}
+
 resource "docker_image" "stirlingpdf" {
   name = "docker.stirlingpdf.com/stirlingtools/stirling-pdf:latest"
 }
@@ -51,8 +55,4 @@ resource "docker_image" "postgres" {
 
 resource "docker_image" "redis" {
   name = "redis:latest"
-}
-
-resource "docker_image" "cloudflared" {
-  name = "cloudflare/cloudflared:latest"
 }

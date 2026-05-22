@@ -1,10 +1,23 @@
-variable "paperless_secret_key" {
-  type      = string
+variable "cloudflare_api_token" {
+  type = string
   sensitive = true
 }
 
-variable "cloudflared_token" {
+variable "cloudflare_account_id" {
   type = string
+}
+
+variable "cloudflare_zone_id" {
+  type = string
+}
+
+variable "pocket_id_encryption_key" {
+  type = string
+  sensitive = true
+}
+
+variable "paperless_secret_key" {
+  type      = string
   sensitive = true
 }
 

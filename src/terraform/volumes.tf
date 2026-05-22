@@ -1,3 +1,10 @@
+resource "docker_volume" "pocket_id_data" {
+  name = "pocket-id-data"
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "docker_volume" "forgejo_data" {
   name = "forgejo-data"
   lifecycle {

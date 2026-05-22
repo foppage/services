@@ -19,17 +19,25 @@
 #
 # }
 
-// cloudflare tunnels
+// pocket id
 
-resource "docker_container" "cloudflared" {
-  image = docker_image.cloudflared.image_id
-  name = "cloudflared"
-
-  command = ["tunnel", "--no-autoupdate", "run", "--token", var.cloudflared_token]
+resource "docker_container" "pocket_id" {
+  image = docker_image.pocket_id.image_id
+  name = "pocket-id"
 
   networks_advanced {
     name = docker_network.cloudflared.id
   }
+
+  volumes {
+    volume_name = docker_volume.pocket_id_data.id
+    container_path = "/app/data"
+  }
+
+  env = [
+    "APP_URL=https://id.june.pet",
+    "ENCRYPTION_KEY=${var.pocket_id_encryption_key}"
+  ]
 
 }
 
